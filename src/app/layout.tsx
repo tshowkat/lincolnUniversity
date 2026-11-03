@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Manrope, Plus_Jakarta_Sans } from "next/font/google";
 import { BRAND_ASSETS, SITE_URL } from "@/data/site";
 import { Providers } from "@/components/Providers";
+import { ChatWidget } from "@/components/ChatWidget";
 import "./globals.css";
 
 const body = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-body", display: "swap" });
@@ -57,7 +58,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to main content
         </a>
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <ChatWidget />
+        </Providers>
       </body>
     </html>
   );

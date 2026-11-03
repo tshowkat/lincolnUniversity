@@ -2,7 +2,7 @@
   "name": "luc-odl",
   "version": "1.0.0",
   "private": true,
-  "description": "Centre of Open & Distance Learning (ODL) \u2014 Lincoln University College, Malaysia",
+  "description": "Centre of Open & Distance Learning (ODL) — Lincoln University College, Malaysia",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -16,6 +16,7 @@
     "node": ">=18.17.0"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "1.4.0",
     "framer-motion": "11.11.17",
     "lucide-react": "0.453.0",
     "next": "14.2.35",

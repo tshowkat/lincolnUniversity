@@ -19,7 +19,7 @@ export function FloatingActions() {
   }, []);
 
   const fabCls =
-    "fixed bottom-24 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-brand-primary text-white shadow-glow ring-4 ring-white transition hover:bg-brand-deep active:scale-95 md:bottom-6 md:right-6 md:h-16 md:w-16";
+    "fixed bottom-[10.5rem] right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-brand-primary text-white shadow-glow ring-4 ring-white transition hover:bg-brand-deep active:scale-95 md:bottom-24 md:right-6 md:h-16 md:w-16";
 
   return (
     <>
