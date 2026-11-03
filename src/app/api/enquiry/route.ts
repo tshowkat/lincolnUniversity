@@ -50,6 +50,8 @@ export async function POST(req: Request) {
     utm_campaign: str(body.utm_campaign, 160) || undefined,
     pageUrl: str(body.pageUrl, 500) || req.headers.get("referer") || undefined,
     consent: input.consent,
+    // Links the visitor's "Ask us" chat (if any) to this lead in the admin portal.
+    chatSessionId: /^[A-Za-z0-9-]{8,64}$/.test(str(body.chatSessionId, 64)) ? str(body.chatSessionId, 64) : undefined,
   };
 
   const apiUrl = process.env.LEADS_API_URL;

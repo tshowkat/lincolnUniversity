@@ -18,6 +18,7 @@ import {
 } from "@/lib/enquiry";
 import { ENQUIRE_EVENT, cn } from "@/lib/utils";
 import { postJson } from "@/lib/post-json";
+import { peekChatSessionId } from "@/lib/chat-session";
 
 const INITIAL: EnquiryInput = { fullName: "", email: "", country: "MY", whatsapp: "", programme: "", consent: false, company: "" };
 
@@ -89,6 +90,7 @@ export function EnquiryForm() {
         ...values,
         ...captureUtm(),
         pageUrl: window.location.href,
+        chatSessionId: peekChatSessionId() ?? undefined,
       });
       if (!res.ok || !data.ok) {
         if (data.errors) setErrors(data.errors);

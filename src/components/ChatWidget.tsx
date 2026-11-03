@@ -3,6 +3,7 @@
 import { Fragment, useEffect, useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Bot, Send, Sparkles, X } from "lucide-react";
+import { chatSessionId } from "@/lib/chat-session";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -119,7 +120,7 @@ export function ChatWidget() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         // The greeting is UI-only; the API expects the conversation to start with the student.
-        body: JSON.stringify({ messages: history.slice(1) }),
+        body: JSON.stringify({ messages: history.slice(1), sessionId: chatSessionId(), pageUrl: window.location.href }),
       });
       if (!res.body) throw new Error("no body");
       const reader = res.body.getReader();

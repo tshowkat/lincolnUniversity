@@ -1,4 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
+import { waitUntil } from "@vercel/functions";
 import { SYSTEM_PROMPT } from "@/lib/chat-knowledge";
 
 export const runtime = "nodejs";
@@ -27,6 +28,31 @@ const text = (body: string, status: number) =>
 
 let client: Anthropic | null = null;
 
+/** Admin portal endpoint that stores chats: CHAT_LOG_URL, or LEADS_API_URL with /api/leads → /api/chats. */
+function chatLogUrl() {
+  if (process.env.CHAT_LOG_URL) return process.env.CHAT_LOG_URL;
+  const leads = process.env.LEADS_API_URL;
+  return leads && /\/api\/leads\/?$/.test(leads) ? leads.replace(/\/api\/leads\/?$/, "/api/chats") : null;
+}
+
+/** Sends one finished question/answer pair to the admin portal. Never throws: logging must not break the chat. */
+async function logExchange(entry: { sessionId: string; question: string; answer: string; pageUrl?: string; countryCode?: string }) {
+  const url = chatLogUrl();
+  const key = process.env.LEADS_API_KEY;
+  if (!url || !key) return;
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-api-key": key },
+      body: JSON.stringify(entry),
+      signal: AbortSignal.timeout(8_000),
+    });
+    if (!res.ok) console.error(`[chat] admin portal rejected chat log: ${res.status}`);
+  } catch (err) {
+    console.error("[chat] sending chat log to the admin portal failed", err);
+  }
+}
+
 export async function POST(req: Request) {
   if (!process.env.ANTHROPIC_API_KEY) {
     return text("The chat assistant isn't set up yet. Please use the enquiry form and a counsellor will reply.", 503);
@@ -37,7 +63,9 @@ export async function POST(req: Request) {
     return text("You've sent a lot of messages in a short time. Please wait a few minutes, or talk to a counsellor.", 429);
   }
 
-  const body = (await req.json().catch(() => null)) as { messages?: unknown } | null;
+  const body = (await req.json().catch(() => null)) as { messages?: unknown; sessionId?: unknown; pageUrl?: unknown } | null;
+  const sessionId = typeof body?.sessionId === "string" && /^[A-Za-z0-9-]{8,64}$/.test(body.sessionId) ? body.sessionId : null;
+  const pageUrl = typeof body?.pageUrl === "string" ? body.pageUrl.slice(0, 500) : undefined;
   const raw = Array.isArray(body?.messages) ? body.messages : [];
   const messages: Anthropic.Beta.BetaMessageParam[] = raw
     .slice(-MAX_TURNS)
@@ -70,29 +98,45 @@ export async function POST(req: Request) {
   const readable = new ReadableStream<Uint8Array>({
     async start(controller) {
       let sent = false;
+      let answer = "";
+      const emit = (t: string) => {
+        answer += t;
+        controller.enqueue(encoder.encode(t));
+      };
       try {
         for await (const event of stream) {
           if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
-            controller.enqueue(encoder.encode(event.delta.text));
+            emit(event.delta.text);
             sent = true;
           }
         }
         const final = await stream.finalMessage();
         if (final.stop_reason === "refusal" && !sent) {
-          controller.enqueue(encoder.encode("Sorry, I can't help with that. A counsellor can: [talk to a counsellor](/#admissions)."));
+          emit("Sorry, I can't help with that. A counsellor can: [talk to a counsellor](/#admissions).");
         }
       } catch (err) {
         if (err instanceof Anthropic.RateLimitError) console.error("[chat] rate limited by API");
         else if (err instanceof Anthropic.APIError) console.error(`[chat] API error ${err.status}:`, err.message);
         else console.error("[chat]", err);
-        controller.enqueue(
-          encoder.encode(
-            (sent ? "\n\n" : "") +
-              "Sorry, something went wrong on our side. Please try again, or [talk to a counsellor](/#admissions).",
-          ),
-        );
+        emit((sent ? "\n\n" : "") + "Sorry, something went wrong on our side. Please try again, or [talk to a counsellor](/#admissions).");
       } finally {
-        controller.close();
+        try {
+          controller.close();
+        } catch {
+          /* the student closed the chat mid-reply */
+        }
+        if (sessionId && answer) {
+          // Runs after the reply has reached the student; Vercel keeps the function alive until it finishes.
+          waitUntil(
+            logExchange({
+              sessionId,
+              question: messages[messages.length - 1]!.content as string,
+              answer,
+              pageUrl,
+              countryCode: req.headers.get("x-vercel-ip-country") ?? undefined,
+            }),
+          );
+        }
       }
     },
     cancel() {
