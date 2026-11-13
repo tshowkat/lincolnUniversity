@@ -3,7 +3,9 @@
  *
  * To add a programme: append an object to `programmes` below. Titles, images and
  * links must come from the official Lincoln University College website
- * (https://www.lincoln.edu.my/centre-of-odl/). Do not invent details here; the
+ * (https://www.lincoln.edu.my/centre-of-odl/, or the school pages such as
+ * https://www.lincoln.edu.my/school-of-business-management/). Every programme listed here is
+ * offered online through Lincoln Online. Do not invent details here; the
  * "View Details" button sends visitors to `link` for fees, duration and entry requirements.
  */
 
@@ -16,7 +18,8 @@ export type Field =
   | "Education"
   | "Social Sciences"
   | "Engineering & Science"
-  | "Hospitality";
+  | "Hospitality"
+  | "Arts & Design";
 
 export interface Programme {
   id: string;
@@ -38,6 +41,7 @@ export const FIELDS: Field[] = [
   "Social Sciences",
   "Engineering & Science",
   "Hospitality",
+  "Arts & Design",
 ];
 
 export const programmes: Programme[] = [
@@ -239,6 +243,200 @@ export const programmes: Programme[] = [
     link: "https://www.lincoln.edu.my/bachelor-in-computer-science-network-technology-and-cybersecurity-honours/",
   },
 
+  // From the school pages on lincoln.edu.my (all offered online via Lincoln Online)
+  {
+    id: "bba-health-administration",
+    title: "Bachelor in Business Administration with Health Administration (Honours)",
+    level: "Bachelor's",
+    field: "Business",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/07/swach-2.jpg",
+    link: "https://www.lincoln.edu.my/bachelor-in-business-administration-with-health-administration-honours/",
+  },
+  {
+    id: "bachelor-management-oil-gas",
+    title: "Bachelor of Management (Oil and Gas Management)",
+    level: "Bachelor's",
+    field: "Business",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/96.jpg",
+    link: "https://www.lincoln.edu.my/bachelor-of-management-oil-and-gas-management/",
+  },
+  {
+    id: "bachelor-business-entrepreneurship",
+    title: "Bachelor of Business Entrepreneurship",
+    level: "Bachelor's",
+    field: "Business",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/13857.jpg",
+    link: "https://www.lincoln.edu.my/bachelor-of-business-entrepreneurship/",
+  },
+  {
+    id: "bba-airline-airport-management",
+    title: "Bachelor of Business Administration in Airline and Airport Management",
+    level: "Bachelor's",
+    field: "Business",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/18981.jpg",
+    link: "https://www.lincoln.edu.my/bachelor-of-business-administration-in-airline-and-airport-management/",
+  },
+  {
+    id: "bba-accounting",
+    title: "Bachelor of Business Administration in Accounting",
+    level: "Bachelor's",
+    field: "Business",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/16088.jpg",
+    link: "https://www.lincoln.edu.my/bachelor-of-business-administration-in-accounting/",
+  },
+  {
+    id: "bachelor-finance",
+    title: "Bachelor of Finance",
+    level: "Bachelor's",
+    field: "Business",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/07/Bachelor-of-Finance.jpeg",
+    link: "https://www.lincoln.edu.my/bachelor-of-finance/",
+  },
+  {
+    id: "bachelor-tourism-management",
+    title: "Bachelor in Tourism Management",
+    level: "Bachelor's",
+    field: "Hospitality",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/44801.jpg",
+    link: "https://www.lincoln.edu.my/bachelor-in-tourism-management/",
+  },
+  {
+    id: "bachelor-education",
+    title: "Bachelor of Education",
+    level: "Bachelor's",
+    field: "Education",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/1914.jpg",
+    link: "https://www.lincoln.edu.my/bachelor-of-education/",
+  },
+  {
+    id: "bachelor-education-tesl",
+    title: "Bachelor of Education in Teaching of English as a Second Language (TESL)",
+    level: "Bachelor's",
+    field: "Education",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/2149272227.jpg",
+    link: "https://www.lincoln.edu.my/bachelor-of-education-teaching-of-english-as-a-second-language-tesl/",
+  },
+  {
+    id: "bachelor-mass-communication",
+    title: "Bachelor of Arts in Mass Communication (Honours)",
+    level: "Bachelor's",
+    field: "Social Sciences",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/03/156463.jpg",
+    link: "https://www.lincoln.edu.my/bachelor-of-arts-in-mass-communication-honours/",
+  },
+  {
+    id: "bachelor-islamic-studies",
+    title: "Bachelor of Islamic Studies (Honours)",
+    level: "Bachelor's",
+    field: "Social Sciences",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/6865.jpg",
+    link: "https://www.lincoln.edu.my/bachelor-of-islamic-studies-honours/",
+  },
+  {
+    id: "bachelor-business-information-systems",
+    title: "Bachelor of Business Information Systems",
+    level: "Bachelor's",
+    field: "IT & Computing",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/03/21821.jpg",
+    link: "https://www.lincoln.edu.my/bachelor-of-business-information-systems/",
+  },
+  {
+    id: "bit-data-analytics",
+    title: "Bachelor of Information Technology (Honours) (Data Analytics)",
+    level: "Bachelor's",
+    field: "IT & Computing",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/Data-Analytics.jpg",
+    link: "https://www.lincoln.edu.my/bachelor-of-information-technology-honours-data-analytics/",
+  },
+  {
+    id: "bit-internet-technology-cloud-computing",
+    title: "Bachelor of Information Technology (Honours) (Internet Technology and Cloud Computing)",
+    level: "Bachelor's",
+    field: "IT & Computing",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/Cloud-Computing.jpg",
+    link: "https://www.lincoln.edu.my/bachelor-of-information-technology-honours-internet-technology-and-cloud-computing/",
+  },
+  {
+    id: "bcs-artificial-intelligence",
+    title: "Bachelor of Computer Science (Honours) (Artificial Intelligence)",
+    level: "Bachelor's",
+    field: "IT & Computing",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/2150714236.jpg",
+    link: "https://www.lincoln.edu.my/bachelor-of-computer-science-honours-artificial-intelligence/",
+  },
+  {
+    id: "bcs-e-commerce",
+    title: "Bachelor of Computer Science with E-Commerce",
+    level: "Bachelor's",
+    field: "IT & Computing",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/E-Commerce.jpg",
+    link: "https://www.lincoln.edu.my/bachelor-of-computer-science-with-e-commerce/",
+  },
+  {
+    id: "ba-creative-multimedia-technology",
+    title: "Bachelor of Arts (Honours) in Creative Multimedia Technology",
+    level: "Bachelor's",
+    field: "Arts & Design",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/Multimedia-Technology.jpg",
+    link: "https://www.lincoln.edu.my/bachelor-of-arts-honours-in-creative-multimedia-technology/",
+  },
+  {
+    id: "bachelor-digital-film-technology",
+    title: "Bachelor in Digital Film Technology (Honours)",
+    level: "Bachelor's",
+    field: "Arts & Design",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/Digital-Film-Technology.jpg",
+    link: "https://www.lincoln.edu.my/bachelor-in-digital-film-technology-honours/",
+  },
+  {
+    id: "bachelor-fashion-design-management",
+    title: "Bachelor in Fashion Design Management (Honours)",
+    level: "Bachelor's",
+    field: "Arts & Design",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/03/608.jpg",
+    link: "https://www.lincoln.edu.my/bachelor-in-fashion-design-management-honours/",
+  },
+  {
+    id: "bachelor-civil-engineering-technology",
+    title: "Bachelor of Civil Engineering Technology with Honours",
+    level: "Bachelor's",
+    field: "Engineering & Science",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/122980.jpg",
+    link: "https://www.lincoln.edu.my/bachelor-of-civil-engineering-technology-with-honours/",
+  },
+  {
+    id: "bachelor-electrical-electronics-engineering-technology",
+    title: "Bachelor of Electrical and Electronics Engineering Technology with Honours",
+    level: "Bachelor's",
+    field: "Engineering & Science",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/40.jpg",
+    link: "https://www.lincoln.edu.my/bachelor-of-electrical-and-electronics-engineering-technology-hons-2/",
+  },
+  {
+    id: "bachelor-mechanical-engineering-technology-aeronautics",
+    title: "Bachelor of Mechanical Engineering Technology (Aeronautics) with Honours",
+    level: "Bachelor's",
+    field: "Engineering & Science",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/9515.jpg",
+    link: "https://www.lincoln.edu.my/bachelor-of-mechanical-engineering-technology-aeronautics-with-honours/",
+  },
+  {
+    id: "bachelor-mechanical-engineering-technology",
+    title: "Bachelor of Mechanical Engineering Technology with Honours",
+    level: "Bachelor's",
+    field: "Engineering & Science",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/4759.jpg",
+    link: "https://www.lincoln.edu.my/bachelor-of-mechanical-engineering-technology-with-honours/",
+  },
+  {
+    id: "bachelor-mechatronics-engineering-technology",
+    title: "Bachelor of Mechatronics Engineering Technology with Honours",
+    level: "Bachelor's",
+    field: "Engineering & Science",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/115.jpg",
+    link: "https://www.lincoln.edu.my/bachelor-of-mechatronics-engineering-technology-with-honours/",
+  },
+
   // ───────────── Diploma ─────────────
   {
     id: "diploma-business-administration",
@@ -274,6 +472,72 @@ export const programmes: Programme[] = [
     link: "https://www.lincoln.edu.my/diploma-in-electrical-and-electronics-engineering-odl/",
   },
 
+  // From the school pages on lincoln.edu.my (all offered online via Lincoln Online)
+  {
+    id: "diploma-hotel-management",
+    title: "Diploma in Hotel Management",
+    level: "Diploma",
+    field: "Hospitality",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/03/42054.jpg",
+    link: "https://www.lincoln.edu.my/diploma-in-hotel-management/",
+  },
+  {
+    id: "diploma-culinary-arts",
+    title: "Diploma in Culinary Arts",
+    level: "Diploma",
+    field: "Hospitality",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/03/5975.jpg",
+    link: "https://www.lincoln.edu.my/diploma-in-culinary-arts/",
+  },
+  {
+    id: "diploma-tesl",
+    title: "Diploma in Teaching English as a Second Language",
+    level: "Diploma",
+    field: "Education",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/40120.jpg",
+    link: "https://www.lincoln.edu.my/diploma-in-teaching-english-as-a-second-language/",
+  },
+  {
+    id: "diploma-early-childhood-education",
+    title: "Diploma in Early Childhood Education",
+    level: "Diploma",
+    field: "Education",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/18713.jpg",
+    link: "https://www.lincoln.edu.my/diploma-in-early-childhood-education/",
+  },
+  {
+    id: "diploma-psychology",
+    title: "Diploma in Psychology",
+    level: "Diploma",
+    field: "Social Sciences",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/03/7297.jpg",
+    link: "https://www.lincoln.edu.my/diploma-in-psychology/",
+  },
+  {
+    id: "diploma-computer-science",
+    title: "Diploma in Computer Science",
+    level: "Diploma",
+    field: "IT & Computing",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/Computer-Science.jpg",
+    link: "https://www.lincoln.edu.my/diploma-in-computer-science/",
+  },
+  {
+    id: "diploma-multimedia-applications",
+    title: "Diploma in Multimedia Applications",
+    level: "Diploma",
+    field: "Arts & Design",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/Multimedia-Applications.jpg",
+    link: "https://www.lincoln.edu.my/diploma-in-multimedia-applications/",
+  },
+  {
+    id: "diploma-aeronautical-engineering-technology",
+    title: "Diploma in Aeronautical Engineering Technology (Aircraft Maintenance)",
+    level: "Diploma",
+    field: "Engineering & Science",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/6385.jpg",
+    link: "https://www.lincoln.edu.my/diploma-in-aeronautical-engineering-technology-aircraft-maintenance/",
+  },
+
   // ───────────── Foundation ─────────────
   {
     id: "foundation-science",
@@ -292,6 +556,15 @@ export const programmes: Programme[] = [
     image:
       "https://www.lincoln.edu.my/wp-content/uploads/2025/03/freepik__the-style-is-candid-image-photography-with-natural__13525.jpeg",
     link: "https://www.lincoln.edu.my/foundation-in-arts-odl/",
+  },
+  // From the school pages on lincoln.edu.my (all offered online via Lincoln Online)
+  {
+    id: "foundation-business-computing",
+    title: "Foundation in Business and Computing",
+    level: "Foundation",
+    field: "Business",
+    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/07/Foundation-in-Business-and-Computing2.jpeg",
+    link: "https://www.lincoln.edu.my/foundation-in-business-and-computing/",
   },
 ];
 

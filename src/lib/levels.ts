@@ -5,6 +5,7 @@ import {
   GraduationCap,
   HeartPulse,
   Laptop,
+  Palette,
   Users,
   type LucideIcon,
 } from "lucide-react";
@@ -27,4 +28,5 @@ export const FIELD_ICON: Record<Field, LucideIcon> = {
   "Social Sciences": Users,
   "Engineering & Science": FlaskConical,
   Hospitality: ConciergeBell,
+  "Arts & Design": Palette,
 };
