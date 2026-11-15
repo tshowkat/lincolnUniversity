@@ -325,14 +325,6 @@ export const programmes: Programme[] = [
     link: "https://www.lincoln.edu.my/bachelor-of-arts-in-mass-communication-honours/",
   },
   {
-    id: "bachelor-islamic-studies",
-    title: "Bachelor of Islamic Studies (Honours)",
-    level: "Bachelor's",
-    field: "Social Sciences",
-    image: "https://www.lincoln.edu.my/wp-content/uploads/2025/02/6865.jpg",
-    link: "https://www.lincoln.edu.my/bachelor-of-islamic-studies-honours/",
-  },
-  {
     id: "bachelor-business-information-systems",
     title: "Bachelor of Business Information Systems",
     level: "Bachelor's",
