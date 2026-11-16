@@ -41,11 +41,15 @@ npm run dev                  # http://localhost:3000
 | --- | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | Production | Canonical URL used for Open Graph, sitemap and robots, e.g. `https://odl.example.edu.my` |
 | `ENQUIRY_WEBHOOK_URL` | **Production** | **[CLIENT TO PROVIDE]** Endpoint that receives enquiry form submissions as JSON (CRM, Zapier, Make, n8n, Google Apps Script…) |
+| `RESEND_API_KEY`, `RESEND_FROM` | Optional | [Resend](https://resend.com) API key and sender (on a domain verified in Resend). Enables form emails |
+| `RESEND_NOTIFY_TO` | Optional | Staff inbox(es), comma-separated, that get a copy of every enquiry and service request. Replies go to the student |
+| `RESEND_VERIFY_TO` | Optional | Inbox(es) for certificate verification requests (defaults to `RESEND_NOTIFY_TO`) |
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | Optional | **[CLIENT TO PROVIDE]** WhatsApp number, digits only (e.g. `60123456789`). If empty, the floating button opens the enquiry form instead |
 
-> In production, if `ENQUIRY_WEBHOOK_URL` is not set, the form shows an error and asks the visitor to
-> email `info@lincoln.edu.my` instead, so no lead is silently lost. In development, submissions are
-> written to the server console.
+> In production, a submission needs at least one destination: the Admin Portal (`LEADS_API_URL`), the
+> webhook (`ENQUIRY_WEBHOOK_URL`) or staff email (`RESEND_*`). With none set, the form shows an error and
+> asks the visitor to email `info@lincoln.edu.my` instead, so no lead is silently lost. A submission only
+> fails when every configured destination fails. In development, submissions are written to the server console.
 
 Webhook payload:
 

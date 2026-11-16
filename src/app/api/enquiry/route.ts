@@ -3,6 +3,7 @@ import { countryByCode } from "@/data/countries";
 import { courseById } from "@/lib/courses";
 import { SITE_URL } from "@/data/site";
 import { fullWhatsappNumber, validateEnquiry, type EnquiryInput } from "@/lib/enquiry";
+import { emailSubmission, staffRecipients } from "@/lib/mail";
 
 export const runtime = "nodejs";
 
@@ -13,6 +14,7 @@ const str = (v: unknown, max = 300) => (typeof v === "string" ? v.slice(0, max) 
  * Enquiry form endpoint. Validates, then sends the lead to the LUC ODL Admin Portal
  * (LEADS_API_URL + LEADS_API_KEY), which de-duplicates, assigns a counsellor and emails the student.
  * ENQUIRY_WEBHOOK_URL is optional: if set, a copy is also posted there (e.g. a Google Sheet / Zapier).
+ * With Resend configured (src/lib/mail.ts), staff get an email copy, plus a student receipt when the portal is not set.
  */
 export async function POST(req: Request) {
   const body = (await req.json().catch(() => null)) as Record<string, unknown> | null;
@@ -57,10 +59,11 @@ export async function POST(req: Request) {
   const apiUrl = process.env.LEADS_API_URL;
   const apiKey = process.env.LEADS_API_KEY;
   const webhook = process.env.ENQUIRY_WEBHOOK_URL;
+  const toEmail = staffRecipients().length > 0;
 
-  if (!apiUrl && !webhook) {
+  if (!apiUrl && !webhook && !toEmail) {
     if (process.env.NODE_ENV === "production") {
-      console.error("[enquiry] LEADS_API_URL is not set — enquiry rejected so it is not lost silently.");
+      console.error("[enquiry] No destination set (LEADS_API_URL, ENQUIRY_WEBHOOK_URL or RESEND_*) — enquiry rejected so it is not lost silently.");
       return NextResponse.json({ ok: false, error: "Our enquiry service is temporarily unavailable." }, { status: 503 });
     }
     console.info("[enquiry] (dev, no LEADS_API_URL configured)", lead);
@@ -96,16 +99,44 @@ export async function POST(req: Request) {
     }
   }
 
+  let webhookOk = false;
   if (webhook) {
     const copy = { ...lead, whatsapp: lead.whatsappNumber, programme: course?.title, programmeUrl: absolute(course?.link), submittedAt: new Date().toISOString() };
     try {
       const r = await fetch(webhook, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(copy), signal: AbortSignal.timeout(10_000) });
       if (!r.ok) throw new Error(`Webhook responded ${r.status}`);
+      webhookOk = true;
     } catch (err) {
       console.error("[enquiry] webhook failed", err);
-      // Only fatal when the webhook is the sole destination; otherwise the portal already has the lead.
-      if (!apiUrl) return NextResponse.json({ ok: false, error: "We couldn't send your enquiry." }, { status: 502 });
     }
+  }
+
+  const emailed = await emailSubmission({
+    title: "Programme enquiry",
+    email: lead.email,
+    fullName: lead.fullName,
+    rows: [
+      ["Full Name", lead.fullName],
+      ["Email", lead.email],
+      ["Country", lead.country],
+      ["WhatsApp Number", lead.whatsappNumber],
+      ["Programme", course?.title ?? lead.programmeId],
+      ["Programme page", absolute(course?.link)],
+      ["Page", lead.pageUrl],
+    ],
+    // The portal emails the student itself; only send our own receipt when it isn't configured.
+    recordedElsewhere: !!apiUrl || webhookOk,
+    receipt: apiUrl
+      ? undefined
+      : {
+          message: "Thank you for your interest in Lincoln Online. A counsellor will contact you by email or WhatsApp shortly.",
+          rows: [["Programme", course?.title ?? lead.programmeId]],
+        },
+  });
+
+  // Fail only when nothing received the lead; otherwise it is safely recorded somewhere.
+  if (!apiUrl && !webhookOk && !emailed) {
+    return NextResponse.json({ ok: false, error: "We couldn't send your enquiry." }, { status: 502 });
   }
 
   return NextResponse.json({ ok: true });
